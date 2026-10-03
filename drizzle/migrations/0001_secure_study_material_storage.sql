@@ -1,0 +1,5 @@
+GRANT SELECT, INSERT, UPDATE, DELETE ON storage.objects TO authenticated;
+CREATE POLICY "Users read own study materials" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'study-materials' AND (storage.foldername(name))[1] = auth.uid()::text);
+CREATE POLICY "Users upload own study materials" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'study-materials' AND (storage.foldername(name))[1] = auth.uid()::text);
+CREATE POLICY "Users update own study materials" ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'study-materials' AND (storage.foldername(name))[1] = auth.uid()::text) WITH CHECK (bucket_id = 'study-materials' AND (storage.foldername(name))[1] = auth.uid()::text);
+CREATE POLICY "Users delete own study materials" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'study-materials' AND (storage.foldername(name))[1] = auth.uid()::text);
